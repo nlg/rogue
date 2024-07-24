@@ -2,19 +2,14 @@ cmake_minimum_required(VERSION 3.22)
 project(rogue C CXX)
 set(CMAKE_CXX_STANDARD 20)
 
-set(OpenGL_GL_PREFERENCE GLVND)
+# Halt on the first error
+set(CMAKE_POLICY_CONFIGURE_EARLY_OUT_FOR_FATAL_ERRORS ON)
+
+# System OpenGL
 find_package(OpenGL REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIRS})
 
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "GLFW lib only")
-set(GLFW_INSTALL OFF CACHE BOOL "GLFW lib only")
-set(GLAD_GL "")
-
+# Local GLFW
 add_subdirectory(glfw)
-include_directories("${GLFW_SOURCE_DIR}/deps")
-set(GLAD_GL "${GLFW_SOURCE_DIR}/deps/glad/gl.h")
 
-set(rogue-SRC main.cc)
-
-add_executable(rogue ${rogue-SRC} ${GLAD_GL})
+add_executable(rogue main.cc)
 target_link_libraries(rogue ${OPENGL_LIBRARIES} glfw)
